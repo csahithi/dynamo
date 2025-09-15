@@ -79,6 +79,9 @@ pub mod frontend_service {
     /// Number of inflight requests going to the engine (vLLM, SGLang, ...)
     pub const INFLIGHT_REQUESTS_TOTAL: &str = "inflight_requests_total";
 
+    /// Number of connections dropped by clients
+    pub const CLIENT_DISCONNECTS_TOTAL: &str = "client_disconnects_total";
+
     /// Duration of LLM requests
     pub const REQUEST_DURATION_SECONDS: &str = "request_duration_seconds";
 
@@ -125,7 +128,7 @@ pub mod work_handler {
     pub const RESPONSE_BYTES_TOTAL: &str = "response_bytes_total";
 
     /// Number of requests currently being processed by work handler
-    pub const INFLIGHT_REQUESTS: &str = "inflight_requests";
+    pub const INFLIGHT_REQUESTS_TOTAL: &str = "inflight_requests_total";
 
     /// Time spent processing requests by work handler (histogram)
     pub const REQUEST_DURATION_SECONDS: &str = "request_duration_seconds";

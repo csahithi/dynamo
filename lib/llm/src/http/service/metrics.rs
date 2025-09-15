@@ -117,7 +117,8 @@ impl Metrics {
     ///
     /// The following metrics will be created with the configured prefix:
     /// - `{prefix}_requests_total` - IntCounterVec for the total number of requests processed
-    /// - `{prefix}_inflight_requests` - IntGaugeVec for the number of inflight requests
+    /// - `{prefix}_inflight_requests_total` - IntGaugeVec for the number of inflight requests
+    /// - `{prefix}_client_disconnects_total` - IntGauge for the number of connections dropped by clients
     /// - `{prefix}_request_duration_seconds` - HistogramVec for the duration of requests
     /// - `{prefix}_input_sequence_tokens` - HistogramVec for input sequence length in tokens
     /// - `{prefix}_output_sequence_tokens` - HistogramVec for output sequence length in tokens
@@ -156,7 +157,7 @@ impl Metrics {
         .unwrap();
 
         let client_disconnect_gauge = prometheus::IntGauge::new(
-            frontend_metric_name("client_disconnects"),
+            frontend_metric_name(frontend_service::CLIENT_DISCONNECTS_TOTAL),
             "Number of connections dropped by clients",
         )
         .unwrap();
