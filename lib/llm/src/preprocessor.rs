@@ -931,21 +931,15 @@ impl
         let mut response_generator = Box::new(response_generator);
 
         // convert the chat completion request to a common completion request
-        let (common_request, annotations) = self.preprocess_request(&request)?;
+        let (common_request, mut annotations) = self.preprocess_request(&request)?;
 
-        // Decide once per request if we should audit
-        let streaming = request.inner.stream.unwrap_or(false);
         let store = request.inner.store.unwrap_or(false);
 
-        // If auditing applies to this request, stash the JSON by request_id
-        if crate::audit::audit_enabled()
-            && store
-            && !streaming
-            && let Ok(req_json) = serde_json::to_string(&request)
-        {
-            crate::audit::stash_request(context.id().to_string(), req_json);
+        // If auditing applies to this request, add audit annotation
+        if crate::audit::config::policy().enabled && store {
+            let req_json = serde_json::to_string(&request)?;
+            annotations.insert(crate::audit::ANNOTATION_AUDIT_REQUEST.to_string(), req_json);
         }
-
         // update isl
         response_generator.update_isl(common_request.token_ids.len() as u32);
 
