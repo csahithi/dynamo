@@ -98,7 +98,7 @@ dynamo:
 
   metrics:
     prometheusEndpoint: ""
-  
+
   mpiRun:
     secretName: "mpi-run-ssh-secret"
     sshKeygen:
