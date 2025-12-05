@@ -49,10 +49,23 @@ export TRTLLM_MOE_ENABLE_ALLTOALL_WITHOUT_ALLGATHER=1
 export TRTLLM_MOE_USE_LOW_PRECISION_COMBINE=1
 
 # NOTE: Set (or unset) these depending on what cluster you're using
-export TRTLLM_UCX_INTERFACE=enP6p9s0np0
-export UCX_NET_DEVICES=mlx5_0:1,mlx5_1:1,mlx5_3:1,mlx5_4:1,enP6p9s0np0
+export TRTLLM_UCX_INTERFACE=enP22p3s0f0np0
+export UCX_NET_DEVICES=enP22p3s0f0np0
 export OVERRIDE_QUANT_ALGO=W4A8_MXFP4_MXFP8
 export TRTLLM_ENABLE_PDL=1
+
+# GB300 specific: Prevent Triton from initializing CUDA drivers too early
+# export TRITON_PTXAS_PATH=/usr/local/cuda/bin/ptxas
+# export CUDA_DEVICE_ORDER=PCI_BUS_ID
+
+# # Verify GPUs are visible before launching
+# if [ -z "${CUDA_VISIBLE_DEVICES}" ] && [ -z "${SLURM_STEP_GPUS}" ]; then
+#     echo "WARNING: No GPUs explicitly visible via CUDA_VISIBLE_DEVICES or SLURM_STEP_GPUS"
+#     echo "Available GPUs: $(nvidia-smi -L 2>/dev/null || echo 'Unable to query GPUs')"
+# fi
+
+# echo "CUDA_VISIBLE_DEVICES: ${CUDA_VISIBLE_DEVICES:-<not set>}"
+# echo "SLURM_STEP_GPUS: ${SLURM_STEP_GPUS:-<not set>}"
 
 trtllm-llmapi-launch python3 -m dynamo.trtllm \
     --model-path ${model_path} \

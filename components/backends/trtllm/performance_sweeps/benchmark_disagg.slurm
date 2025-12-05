@@ -5,7 +5,7 @@ MULTI_ROUND="${MULTI_ROUND:-8}"
 
 # set MOUNT_DIR
 MOUNT_DIR="${MOUNT_DIR:-${PWD}}"
-CONTAINER_NAME=disaggr-test
+CONTAINER_NAME=disaggr-test-$(date +%s)-$$
 
 
 STREAMING=true
@@ -67,7 +67,7 @@ mkdir -p ${full_logdir}
 # Set clock
 #srun ${set_clock_cmd}
 
-container_mounts=${MOUNT_DIR}:${MOUNT_DIR},${model_path}:${model_path}
+container_mounts=${MOUNT_DIR}:${MOUNT_DIR}
 
 # start the container
 srun -l --container-image=${image} \
@@ -177,6 +177,7 @@ for ((i=1; i<=DECODE_COUNT; i++)); do
       -w ${decode_nodes_csv} \
       --nodes ${num_gen_nodes} \
       --ntasks $gen_tp_size \
+      --gpus-per-node=4 \
       --oversubscribe \
       --overlap \
       bash ${SCRIPTS_DIR}/scripts/start_disagg_worker.sh ${full_logdir}/decode_config.yaml "${enable_pdl}" ${ctx_gpus} ${nsys_on} ${served_model_name} ${model_path} 'decode' &> ${full_logdir}/output_decode_worker_${i}.log &
@@ -203,6 +204,7 @@ for ((i=1; i<=PREFILL_COUNT; i++)); do
         --oversubscribe \
         --overlap \
         --ntasks 1 \
+        --gpus-per-node=4 \
         --nodes 1 \
         bash ${SCRIPTS_DIR}/scripts/start_disagg_worker.sh ${full_logdir}/prefill_config.yaml "${enable_pdl}" ${ctx_gpus} ${nsys_on} ${served_model_name} ${model_path} 'prefill' &> ${full_logdir}/output_prefill_worker_${i}.log &
   prefill_pids+=($!)
