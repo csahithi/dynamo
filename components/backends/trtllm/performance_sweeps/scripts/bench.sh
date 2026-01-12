@@ -166,7 +166,7 @@ for concurrency in ${concurrency_list}; do
             --num-prompts "$(($concurrency * 2))" \
             --random-input-len ${isl} \
             --random-output-len ${osl} \
-            --random-range-ratio 0.8 \
+            --random-range-ratio 1.0 \
             --ignore-eos \
 	    --use-chat-template \
             --backend "dynamo" \
@@ -182,7 +182,7 @@ for concurrency in ${concurrency_list}; do
             --num-prompts "$num_prompts" \
             --random-input-len ${isl} \
             --random-output-len ${osl} \
-            --random-range-ratio 0.8 \
+            --random-range-ratio 1.0 \
             --use-chat-template \
             --ignore-eos \
             --use-chat-template \
