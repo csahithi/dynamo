@@ -168,7 +168,6 @@ for concurrency in ${concurrency_list}; do
             --random-output-len ${osl} \
             --random-range-ratio 0.8 \
             --ignore-eos \
-	    --use-chat-template \
             --backend "dynamo" \
 	    --endpoint "/v1/completions" \
 	    --percentile-metrics ttft,tpot,itl,e2el \
@@ -183,9 +182,7 @@ for concurrency in ${concurrency_list}; do
             --random-input-len ${isl} \
             --random-output-len ${osl} \
             --random-range-ratio 0.8 \
-            --use-chat-template \
             --ignore-eos \
-            --use-chat-template \
             --backend "dynamo" \
             --endpoint "/v1/completions" \
             --percentile-metrics ttft,tpot,itl,e2el \
